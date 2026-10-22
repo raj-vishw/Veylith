@@ -1,0 +1,29 @@
+{
+  "title": "SYNTHETIC KEV",
+  "catalogVersion": "2099.01.15",
+  "synthetic": true,
+  "vulnerabilities": [
+    {
+      "cveID": "CVE-2099-1001",
+      "vendorProject": "Acme Analytics",
+      "product": "Insight Agent",
+      "vulnerabilityName": "Acme Analytics Insight Agent Remote Code Execution",
+      "dateAdded": "2099-01-14",
+      "shortDescription": "[SYNTHETIC DEMO DATA] Insight Agent remote code execution.",
+      "requiredAction": "Apply the vendor update to 4.2.1 or later.",
+      "dueDate": "2099-02-04",
+      "knownRansomwareCampaignUse": "Unknown"
+    },
+    {
+      "cveID": "CVE-2099-1009",
+      "vendorProject": "Globex Backup",
+      "product": "Vault Sync",
+      "vulnerabilityName": "Globex Backup Vault Sync Authentication Bypass",
+      "dateAdded": "2099-01-15",
+      "shortDescription": "[SYNTHETIC DEMO DATA] Vault Sync authentication bypass; affected versions not specified.",
+      "requiredAction": "Follow vendor guidance.",
+      "dueDate": "2099-02-05",
+      "knownRansomwareCampaignUse": "Unknown"
+    }
+  ]
+}

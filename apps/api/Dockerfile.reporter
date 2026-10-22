@@ -1,0 +1,17 @@
+# syntax=docker/dockerfile:1
+# Dedicated PDF rendering environment: the only image that carries WeasyPrint and its system libraries.
+FROM python:3.12.8-slim-bookworm
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1
+RUN pip install --upgrade "pip>=26.2"
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz0b libffi8 fonts-dejavu-core shared-mime-info \
+ && rm -rf /var/lib/apt/lists/*
+RUN useradd --system --uid 10001 --create-home veylith && mkdir -p /app /data && chown veylith:veylith /data
+WORKDIR /app
+COPY requirements.txt requirements-reporter.txt ./
+RUN pip install -r requirements-reporter.txt
+COPY alembic.ini .
+COPY app app
+USER veylith
+# Consumes only the "reports" queue.
+CMD ["celery", "-A", "app.workers.celery_app", "worker", "-Q", "reports", "-c", "2", "--max-tasks-per-child", "50", "-l", "info"]

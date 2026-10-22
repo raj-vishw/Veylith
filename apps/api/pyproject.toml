@@ -1,0 +1,27 @@
+[project]
+name = "veylith-api"
+version = "1.0.0"
+description = "Veylith API: third-party incident impact intelligence"
+requires-python = ">=3.12"
+
+[tool.ruff]
+line-length = 180
+target-version = "py312"
+extend-exclude = ["alembic/versions"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501", "B008", "UP017", "E701", "E702", "E731", "B904", "UP037"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["F401", "F811", "F841", "B011", "B017", "E402", "I001", "B007", "B905"]
+"scripts/*" = ["E402"]
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+check_untyped_defs = false
+# SQLAlchemy lookups return Optional rows that the code narrows by convention (404s); these classes are
+# suppressed so the checker still catches undefined names, wrong attributes, bad returns and assignments.
+disable_error_code = ["union-attr", "arg-type", "index", "call-overload", "misc"]
+exclude = ["alembic/versions", "tests"]

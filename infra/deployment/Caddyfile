@@ -1,0 +1,35 @@
+# HTTPS reverse proxy. Certificates are obtained and renewed automatically (Let's Encrypt) for VEYLITH_DOMAIN.
+{
+	email {$ACME_EMAIL}
+}
+
+{$VEYLITH_DOMAIN} {
+	encode zstd gzip
+
+	# Uploads are limited to 10 MB by the API; the proxy refuses anything much larger before it is buffered.
+	request_body {
+		max_size 12MB
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "same-origin"
+		-Server
+	}
+
+	# API and health endpoints go straight to FastAPI; everything else is the web application.
+	@api path /api/* /health /health/ready
+	handle @api {
+		reverse_proxy api:8000
+	}
+	handle {
+		reverse_proxy web:3000
+	}
+
+	log {
+		output stdout
+		format json
+	}
+}

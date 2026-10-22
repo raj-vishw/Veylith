@@ -1,0 +1,133 @@
+# Development stack. Production uses infra/deployment/docker-compose.prod.yml.
+x-api-env: &api-env
+  ENVIRONMENT: ${ENVIRONMENT:-development}
+  DATABASE_URL: postgresql+psycopg://veylith_app:${APP_DB_PASSWORD}@db:5432/${POSTGRES_DB}
+  MIGRATION_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+  REDIS_URL: redis://redis:6379/0
+  SECRET_KEY: ${SECRET_KEY}
+  COOKIE_SECURE: ${COOKIE_SECURE:-false}
+  ALLOW_REGISTRATION: ${ALLOW_REGISTRATION:-true}
+  TRUSTED_ORIGINS: ${TRUSTED_ORIGINS:-http://localhost:3000}
+  NVD_API_KEY: ${NVD_API_KEY:-}
+  SCHEDULED_INGESTION: ${SCHEDULED_INGESTION:-false}
+  DEMO_PASSWORD: ${DEMO_PASSWORD:-}
+  DEMO_OWNER_EMAIL: ${DEMO_OWNER_EMAIL:-demo.owner@example.com}
+  DEMO_ANALYST_EMAIL: ${DEMO_ANALYST_EMAIL:-demo.analyst@example.com}
+  DEMO_VIEWER_EMAIL: ${DEMO_VIEWER_EMAIL:-demo.viewer@example.com}
+  STORAGE_DIR: /data/storage
+
+services:
+  db:
+    image: postgres:16.6-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      APP_DB_PASSWORD: ${APP_DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./infra/docker/postgres-init.sh:/docker-entrypoint-initdb.d/10-app-role.sh:ro
+    ports: ["127.0.0.1:5432:5432"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7.4-alpine
+    ports: ["127.0.0.1:6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  migrate:
+    build: {context: ./apps/api, target: dev}
+    command: ["alembic", "upgrade", "head"]
+    environment: *api-env
+    depends_on:
+      db: {condition: service_healthy}
+
+  api:
+    build: {context: ./apps/api, target: dev}
+    environment: *api-env
+    ports: ["127.0.0.1:8000:8000"]
+    volumes:
+      - ./apps/api/app:/app/app
+      - storage:/data
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://localhost:8000/health/ready')"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  worker:
+    build: {context: ./apps/api, target: dev}
+    command: ["celery", "-A", "app.workers.celery_app", "worker", "-Q", "default", "-c", "2", "-l", "info"]
+    environment: *api-env
+    volumes: ["storage:/data"]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+
+  beat:
+    build: {context: ./apps/api, target: dev}
+    command: ["celery", "-A", "app.workers.celery_app", "beat", "-l", "info", "-s", "/tmp/celerybeat-schedule"]
+    environment: *api-env
+    depends_on:
+      redis: {condition: service_healthy}
+
+  reporter:
+    build: {context: ./apps/api, dockerfile: Dockerfile.reporter}
+    environment: *api-env
+    volumes: ["storage:/data"]
+    mem_limit: 1g
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+
+  web:
+    build:
+      context: ./apps/web
+    environment:
+      API_INTERNAL_URL: http://api:8000
+      SESSION_COOKIE_NAME: veylith_session
+    ports: ["127.0.0.1:3000:3000"]
+    depends_on:
+      api: {condition: service_healthy}
+
+  test:
+    profiles: ["test"]
+    build: {context: ./apps/api, target: dev}
+    command: ["pytest"]
+    environment: *api-env
+    volumes:
+      - ./apps/api/app:/app/app
+      - ./apps/api/tests:/app/tests
+      - ./apps/api/pytest.ini:/app/pytest.ini
+    depends_on:
+      db: {condition: service_healthy}
+      redis: {condition: service_healthy}
+
+  test-pdf:
+    # Runs the PDF-rendering tests inside the reporter image, the only place WeasyPrint exists.
+    profiles: ["test"]
+    build: {context: ./apps/api, dockerfile: Dockerfile.reporter}
+    entrypoint: ["sh", "-c", "pip install --user -q pytest==9.1.1 && python -m pytest -p no:cacheprovider tests/test_reports.py -k pdf -v"]
+    environment: *api-env
+    volumes:
+      - ./apps/api/tests:/app/tests
+      - ./apps/api/alembic:/app/alembic
+      - ./apps/api/pytest.ini:/app/pytest.ini
+    depends_on:
+      db: {condition: service_healthy}
+      redis: {condition: service_healthy}
+
+volumes:
+  pgdata:
+  storage:

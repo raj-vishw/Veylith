@@ -1,0 +1,291 @@
+{
+  "format": "NVD_CVE",
+  "version": "2.0",
+  "synthetic": true,
+  "vulnerabilities": [
+    {
+      "cve": {
+        "id": "CVE-2099-1001",
+        "published": "2099-01-10T10:00:00.000",
+        "lastModified": "2099-01-12T10:00:00.000",
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "[SYNTHETIC DEMO DATA] Insight Agent before 4.2.1 allows remote attackers to execute code via a crafted telemetry request."
+          }
+        ],
+        "metrics": {
+          "cvssMetricV31": [
+            {
+              "cvssData": {
+                "baseScore": 9.8,
+                "baseSeverity": "CRITICAL"
+              }
+            }
+          ]
+        },
+        "configurations": [
+          {
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:acme_analytics:insight_agent:*:*:*:*:*:*:*:*",
+                    "versionEndExcluding": "4.2.1"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "references": [
+          {
+            "url": "https://example.invalid/advisories/CVE-2099-1001",
+            "source": "synthetic",
+            "tags": [
+              "Vendor Advisory",
+              "Patch"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2099-1002",
+        "published": "2099-01-10T10:00:00.000",
+        "lastModified": "2099-01-12T10:00:00.000",
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "[SYNTHETIC DEMO DATA] Vault Sync 2.0 through 2.5.3 stores replication credentials without encryption."
+          }
+        ],
+        "metrics": {
+          "cvssMetricV31": [
+            {
+              "cvssData": {
+                "baseScore": 7.5,
+                "baseSeverity": "HIGH"
+              }
+            }
+          ]
+        },
+        "configurations": [
+          {
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:globex_backup:vault_sync:*:*:*:*:*:*:*:*",
+                    "versionStartIncluding": "2.0",
+                    "versionEndIncluding": "2.5.3"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "references": [
+          {
+            "url": "https://example.invalid/advisories/CVE-2099-1002",
+            "source": "synthetic",
+            "tags": [
+              "Vendor Advisory",
+              "Patch"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2099-1003",
+        "published": "2099-01-10T10:00:00.000",
+        "lastModified": "2099-01-12T10:00:00.000",
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "[SYNTHETIC DEMO DATA] SSO Gateway 1.8.0 accepts expired assertions."
+          }
+        ],
+        "metrics": {
+          "cvssMetricV31": [
+            {
+              "cvssData": {
+                "baseScore": 6.1,
+                "baseSeverity": "MEDIUM"
+              }
+            }
+          ]
+        },
+        "configurations": [
+          {
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:initech_auth:sso_gateway:1.8.0:*:*:*:*:*:*:*"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "references": [
+          {
+            "url": "https://example.invalid/advisories/CVE-2099-1003",
+            "source": "synthetic",
+            "tags": [
+              "Vendor Advisory",
+              "Patch"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2099-1004",
+        "published": "2099-01-10T10:00:00.000",
+        "lastModified": "2099-01-12T10:00:00.000",
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "[SYNTHETIC DEMO DATA] Insight Agent Pro desktop component allows local privilege escalation."
+          }
+        ],
+        "metrics": {
+          "cvssMetricV31": [
+            {
+              "cvssData": {
+                "baseScore": 7.8,
+                "baseSeverity": "HIGH"
+              }
+            }
+          ]
+        },
+        "configurations": [
+          {
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:acme_analytics:insight_agent_pro:*:*:*:*:*:*:*:*",
+                    "versionEndExcluding": "9.0"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "references": [
+          {
+            "url": "https://example.invalid/advisories/CVE-2099-1004",
+            "source": "synthetic",
+            "tags": [
+              "Vendor Advisory",
+              "Patch"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2099-1005",
+        "published": "2099-01-10T10:00:00.000",
+        "lastModified": "2099-01-12T10:00:00.000",
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "[SYNTHETIC DEMO DATA] A vendor reports an issue in an unnamed component; no affected product information was published."
+          }
+        ],
+        "metrics": {
+          "cvssMetricV31": [
+            {
+              "cvssData": {
+                "baseScore": 5.0,
+                "baseSeverity": "MEDIUM"
+              }
+            }
+          ]
+        },
+        "configurations": [],
+        "references": [
+          {
+            "url": "https://example.invalid/advisories/CVE-2099-1005",
+            "source": "synthetic",
+            "tags": [
+              "Vendor Advisory",
+              "Patch"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2099-1006",
+        "published": "2099-01-10T10:00:00.000",
+        "lastModified": "2099-01-12T10:00:00.000",
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "[SYNTHETIC DEMO DATA] Cloud Panel before 3.3 allows cross-site scripting."
+          }
+        ],
+        "metrics": {
+          "cvssMetricV31": [
+            {
+              "cvssData": {
+                "baseScore": 5.4,
+                "baseSeverity": "MEDIUM"
+              }
+            }
+          ]
+        },
+        "configurations": [
+          {
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:umbrella_hosting:cloud_panel:*:*:*:*:*:*:*:*",
+                    "versionEndExcluding": "3.3"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "references": [
+          {
+            "url": "https://example.invalid/advisories/CVE-2099-1006",
+            "source": "synthetic",
+            "tags": [
+              "Vendor Advisory",
+              "Patch"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

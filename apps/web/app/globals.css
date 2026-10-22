@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+/*
+  Veylith visual language: an intelligence dossier, not a SaaS dashboard.
+  Warm paper neutrals, deep green-black ink, one signal accent (vermilion), an editorial serif for headings,
+  monospace for identifiers and tags, square-cut corners and hairline rules instead of shadows.
+  The slate/colour scales below are remapped so every existing utility class picks the palette up.
+*/
+@theme {
+  /* neutrals: paper and graphite */
+  --color-white: #fbf9f3;
+  --color-slate-50: #f3f0e8;
+  --color-slate-100: #ebe7dc;
+  --color-slate-200: #ddd7c8;
+  --color-slate-300: #c6bfab;
+  --color-slate-400: #9b9482;
+  --color-slate-500: #6f6958;
+  --color-slate-600: #55503f;
+  --color-slate-700: #3b382c;
+  --color-slate-800: #25231a;
+  --color-slate-900: #14130e;
+
+  /* ink: the dark surfaces */
+  --color-ink-950: #0e1311;
+  --color-ink-900: #141b18;
+  --color-ink-800: #1c2622;
+  --color-ink-700: #2a3731;
+
+  /* signal accent */
+  --color-brand: #c4401b;
+  --color-brand-dark: #a53313;
+  --color-brand-soft: #f9e8e0;
+  --color-signal: #e8512a;
+
+  /* status tones, muted to sit on paper */
+  --color-red-50: #fbeeea;
+  --color-red-100: #f4d6cc;
+  --color-red-200: #e8b1a2;
+  --color-red-600: #b5361a;
+  --color-red-700: #98301a;
+  --color-red-800: #7f2412;
+  --color-red-900: #5e1a0c;
+  --color-orange-100: #f6dfc4;
+  --color-orange-200: #ecc595;
+  --color-orange-800: #81440d;
+  --color-amber-50: #f9f1d4;
+  --color-amber-100: #f1e3ae;
+  --color-amber-200: #e3cf7a;
+  --color-amber-300: #d3b84f;
+  --color-amber-600: #946f0f;
+  --color-amber-700: #7a5a0c;
+  --color-amber-800: #664c0b;
+  --color-amber-900: #4a3607;
+  --color-emerald-100: #d3e6d6;
+  --color-emerald-200: #addbb5;
+  --color-emerald-700: #286a42;
+  --color-emerald-800: #1e5636;
+  --color-sky-50: #ecf2f4;
+  --color-sky-100: #d5e4e9;
+  --color-sky-200: #b0cbd5;
+  --color-sky-800: #1f4d61;
+  --color-sky-900: #163849;
+  --color-violet-100: #e2daec;
+  --color-violet-800: #4a3474;
+  --color-fuchsia-50: #f5eaf1;
+  --color-fuchsia-300: #d8b0cc;
+  --color-fuchsia-900: #591f49;
+
+  /* shape: square-cut */
+  --radius-sm: 1px;
+  --radius-md: 2px;
+  --radius-lg: 3px;
+  --radius-xl: 4px;
+  --radius-2xl: 6px;
+  --shadow-sm: 0 1px 0 rgb(20 19 14 / 0.05);
+  --shadow-xl: 0 24px 60px -28px rgb(14 19 17 / 0.55);
+
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+  --font-serif: var(--font-display), Georgia, "Times New Roman", serif;
+  --font-mono: var(--font-code), ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+
+:root { color-scheme: light; }
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased;
+  font-feature-settings: "ss01", "cv11";
+  /* a very faint survey grid: the page reads as a working document */
+  background-image: radial-gradient(rgb(20 19 14 / 0.045) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+h1, h2.display { font-family: var(--font-serif); font-optical-sizing: auto; letter-spacing: -0.015em; }
+h1 { font-weight: 500; }
+
+/* small-caps style label used for tags, column headings and metadata */
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.numeral { font-family: var(--font-serif); font-variant-numeric: lining-nums; letter-spacing: -0.02em; }
+code, .mono { font-family: var(--font-mono); }
+
+button:not(:disabled), [role="button"]:not(:disabled), select, summary { cursor: pointer; }
+.skeleton { @apply animate-pulse rounded-sm bg-slate-200; }
+.react-flow__attribution { display: none; }
+:focus-visible { @apply outline-none ring-2 ring-brand ring-offset-1 ring-offset-white; }
+
+/* graph canvas */
+.react-flow__controls-button { background: var(--color-white); border-bottom-color: var(--color-slate-200); }
+.react-flow__minimap { background: var(--color-slate-100); border: 1px solid var(--color-slate-200); }
+.react-flow__edge-textbg { fill: var(--color-white); }
+
+::selection { background: var(--color-brand); color: white; }
