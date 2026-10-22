@@ -35,7 +35,7 @@ jobs:
       - run: ruff check app scripts tests
       - run: mypy app scripts --cache-dir=/tmp/mypy
       - run: pip-audit -r requirements.txt
-      - name: Tests (offline: no network access to NVD/CISA is needed)
+      - name: "Tests (offline, no network access to NVD or CISA is needed)"
         run: pytest
 
   frontend:
